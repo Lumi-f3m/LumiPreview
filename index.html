@@ -3,28 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cozy HTML Previewer</title>
+    <title>Super Cozy HTML Previewer</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles to ensure Bubblegum Sans font is applied and body takes full height */
+        /* Custom styles to ensure Quicksand font is applied and body takes full height */
         body {
-            font-family: 'Bubblegum Sans', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(to bottom right, #FFF8E1, #FFECB3); /* Soft, creamy gradient */
+            background: linear-gradient(to bottom right, #F5F5DC, #D2B48C); /* A gentle cream to tan gradient */
             overflow: hidden;
             transition: background-color 0.3s ease;
         }
 
         /* Dark mode styles for the body */
         body.dark-mode {
-            background: linear-gradient(to bottom right, #4E342E, #2A1E1C); /* Warm, dark gradient */
-            color: #F5F5DC;
+            background: linear-gradient(to bottom right, #3E2723, #212121); /* Dark earthy tones */
+            color: #EFEBE9;
         }
 
         /* Ensure the iframe fills its container */
@@ -53,16 +53,16 @@
 
         /* Dark mode styles for the window itself */
         .dark-mode #previewWindow {
-            background-color: #6D4C41;
+            background-color: #5D4037;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
         }
 
         /* Dark mode styles for input/textarea */
         .dark-mode #htmlInput,
         .dark-mode #previewFrame {
-            background-color: #5D4037;
-            border-color: #5D4037;
-            color: #F5F5DC;
+            background-color: #4E342E;
+            border-color: #4E342E;
+            color: #EFEBE9;
         }
 
         /* Dark mode styles for labels */
@@ -77,36 +77,36 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #FFFDE7;
-            padding: 20px;
-            border-radius: 16px; /* Increased rounded corners */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            background-color: #FFECB3;
+            padding: 24px;
+            border-radius: 20px; /* Super rounded corners */
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
             z-index: 1000;
             display: none;
             text-align: center;
-            font-family: 'Bubblegum Sans', sans-serif;
+            font-family: 'Quicksand', sans-serif;
             color: #424242;
         }
 
         #messageBox.dark-mode {
             background-color: #6D4C41;
             color: #D7CCC8;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
         }
 
         #messageBox button {
             margin-top: 15px;
-            background-color: #FFAB91; /* Soft coral */
+            background-color: #D2B48C; /* Tan */
             color: white;
-            padding: 8px 16px;
-            border-radius: 12px; /* Rounded button corners */
+            padding: 10px 20px;
+            border-radius: 16px;
             border: none;
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
 
         #messageBox button:hover {
-            background-color: #FF8A65; /* Darker coral on hover */
+            background-color: #C19E75; /* Darker tan on hover */
         }
     </style>
 </head>
@@ -114,17 +114,17 @@
 
     <button
         id="darkModeToggle"
-        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-[#FFECB3] hover:bg-[#FFD54F] text-[#424242] font-bold py-2 px-4 rounded-full shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center z-50
-               dark:bg-[#2A1E1C] dark:hover:bg-[#4E342E] dark:text-[#F5F5DC]"
+        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-[#D2B48C] hover:bg-[#C19E75] text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center z-50
+               dark:bg-[#3E2723] dark:hover:bg-[#212121] dark:text-[#EFEBE9]"
     >
-        <span id="sunEmoji" class="text-xl">☀️</span>
-        <span id="moonEmoji" class="text-xl hidden">🌙</span>
-        <span id="darkModeText" class="ml-2">Toggle Dark Mode</span>
+        <span id="sunEmoji" class="text-2xl">☀️</span>
+        <span id="moonEmoji" class="text-2xl hidden">🌙</span>
+        <span id="darkModeText" class="ml-3">Toggle Dark Mode</span>
     </button>
 
     <div
         id="previewWindow"
-        class="absolute bg-[#FFFDE7] rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ease-in-out"
+        class="absolute bg-[#FFF8E1] rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ease-in-out"
         style="
             width: 600px;
             height: 450px;
@@ -134,72 +134,72 @@
     >
         <div
             id="windowHeader"
-            class="flex items-center justify-between bg-gradient-to-r from-[#FFAB91] to-[#FFCC80] text-white p-3 cursor-grab active:cursor-grabbing rounded-t-3xl"
+            class="flex items-center justify-between bg-gradient-to-r from-[#D2B48C] to-[#C19E75] text-white p-4 cursor-grab active:cursor-grabbing rounded-t-3xl"
         >
             <div class="flex space-x-2 mr-4">
-                <button id="closeBtn" class="w-5 h-5 bg-[#EF5350] hover:bg-[#E57373] rounded-full transition-colors flex items-center justify-center group text-white">
-                    <span class="opacity-0 group-hover:opacity-100 transition-opacity">❌</span>
+                <button id="closeBtn" class="w-6 h-6 bg-[#E57373] hover:bg-[#EF5350] rounded-full transition-colors flex items-center justify-center group text-white text-xl">
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity">✖️</span>
                 </button>
-                <button id="minimizeBtn" class="w-5 h-5 bg-[#FFEE58] hover:bg-[#FFD54F] rounded-full transition-colors flex items-center justify-center group text-white">
+                <button id="minimizeBtn" class="w-6 h-6 bg-[#FFECB3] hover:bg-[#FFD54F] rounded-full transition-colors flex items-center justify-center group text-white text-xl">
                     <span class="opacity-0 group-hover:opacity-100 transition-opacity">➖</span>
                 </button>
-                <button id="maximizeBtn" class="w-5 h-5 bg-[#66BB6A] hover:bg-[#A5D6A7] rounded-full transition-colors flex items-center justify-center group text-white">
+                <button id="maximizeBtn" class="w-6 h-6 bg-[#A5D6A7] hover:bg-[#81C784] rounded-full transition-colors flex items-center justify-center group text-white text-xl">
                     <span class="opacity-0 group-hover:opacity-100 transition-opacity">➕</span>
                 </button>
             </div>
-            <span class="text-xl font-semibold flex items-center mx-auto text-[#424242]">
-                <span class="mr-2">🐾</span> HTML Previewer
+            <span class="text-2xl font-semibold flex items-center mx-auto text-[#424242]">
+                <span class="mr-2">🐾</span> Coziness Checker
             </span>
         </div>
 
-        <div class="flex flex-1 p-4 overflow-hidden">
-            <div class="flex flex-col w-1/2 pr-4">
-                <label for="htmlInput" class="block text-[#424242] text-lg font-bold mb-2">
-                    Enter HTML or choose a file:
+        <div class="flex flex-1 p-6 overflow-hidden">
+            <div class="flex flex-col w-1/2 pr-6">
+                <label for="htmlInput" class="block text-[#424242] text-xl font-bold mb-3">
+                    Your HTML Snippet:
                 </label>
                 <textarea
                     id="htmlInput"
-                    class="flex-1 p-3 border border-[#FFD54F] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF8A65] font-mono text-sm resize-none mb-3 shadow-inner"
+                    class="flex-1 p-4 border-4 border-[#C19E75] rounded-3xl focus:outline-none focus:ring-4 focus:ring-[#8D6E63] font-mono text-base resize-none mb-4 shadow-inner"
                     placeholder=" "
                 ></textarea>
-                <div class="flex items-center space-x-3 mb-3">
-                    <label class="cursor-pointer bg-[#90CAF9] hover:bg-[#64B5F6] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all duration-200 ease-in-out transform hover:scale-105">
+                <div class="flex items-center space-x-4 mb-4">
+                    <label class="cursor-pointer bg-[#D2B48C] hover:bg-[#C19E75] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-200 ease-in-out transform hover:scale-105">
                         Choose File
                         <input type="file" id="fileInput" accept=".html,.htm" class="hidden" />
                     </label>
                     <button
                         id="previewButton"
-                        class="bg-[#AED581] hover:bg-[#81C784] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center"
+                        class="bg-[#8D6E63] hover:bg-[#6D4C41] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center"
                     >
-                        <span class="mr-2">▶️</span>
-                        Preview HTML
+                        <span class="mr-2 text-xl">▶️</span>
+                        Preview
                     </button>
                 </div>
             </div>
 
-            <div class="flex flex-col w-1/2 pl-4 border-l border-[#FFD54F]">
-                <h3 class="text-[#424242] text-lg font-bold mb-2">Live Preview:</h3>
+            <div class="flex flex-col w-1/2 pl-6 border-l-4 border-[#C19E75]">
+                <h3 class="text-[#424242] text-xl font-bold mb-3">Live Preview:</h3>
                 <iframe
                     id="previewFrame"
-                    class="flex-1 border border-[#FFD54F] rounded-2xl bg-white shadow-inner mb-3"
+                    class="flex-1 border-4 border-[#C19E75] rounded-3xl bg-white shadow-inner mb-4"
                     title="HTML Preview"
                     sandbox="allow-scripts allow-same-origin"
-                    srcdoc="<p style='font-family: Bubblegum Sans, sans-serif; padding: 10px; color: #424242;'>Your HTML will appear here...</p>"
+                    srcdoc="<p style='font-family: Quicksand, sans-serif; padding: 15px; color: #424242; text-align: center; line-height: 1.5;'>A world of coziness awaits! Your HTML will appear right here.</p>"
                 ></iframe>
-                <div class="flex flex-col space-y-2">
+                <div class="flex flex-col space-y-3">
                     <button
                         id="openAboutBlankBtn"
-                        class="bg-[#FFD54F] hover:bg-[#FFCC80] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                        class="bg-[#E57373] hover:bg-[#EF5350] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center justify-center"
                     >
-                        <span class="mr-2">🚪</span>
+                        <span class="mr-2 text-xl">🚪</span>
                         Open in about:blank
                     </button>
                     <button
                         id="openFullscreenBtn"
-                        class="bg-[#FFAB91] hover:bg-[#FF8A65] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                        class="bg-[#6D4C41] hover:bg-[#5D4037] text-white font-bold py-3 px-6 rounded-2xl shadow-lg transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center justify-center"
                     >
-                        <span class="mr-2">🖼️</span>
-                        Open in new Tab
+                        <span class="mr-2 text-xl">🖼️</span>
+                        Open in New Tab
                     </button>
                 </div>
             </div>
@@ -207,7 +207,7 @@
 
         <div
             id="resizeHandle"
-            class="absolute bottom-0 right-0 w-6 h-6 bg-[#FFD54F] hover:bg-[#FFCC80] cursor-nwse-resize rounded-br-3xl"
+            class="absolute bottom-0 right-0 w-8 h-8 bg-[#C19E75] hover:bg-[#D2B48C] cursor-nwse-resize rounded-br-3xl"
         ></div>
     </div>
 
@@ -316,17 +316,17 @@
             // Basic dark mode styles to inject into the iframe
             const iframeDarkModeStyles = isDarkModeActive ? `
                 body {
-                    background-color: #2A1E1C !important;
-                    color: #F5F5DC !important;
+                    background-color: #3E2723 !important;
+                    color: #EFEBE9 !important;
                 }
                 h1, h2, h3, h4, h5, h6 {
-                    color: #F5F5DC !important;
+                    color: #EFEBE9 !important;
                 }
                 p, span, div {
                     color: #D7CCC8 !important;
                 }
                 a {
-                    color: #FFD54F !important;
+                    color: #D2B48C !important;
                 }
             ` : '';
 
@@ -338,7 +338,7 @@
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Preview</title>
                     <style>
-                        body { margin: 0; padding: 10px; font-family: 'Bubblegum Sans', sans-serif; box-sizing: border-box; }
+                        body { margin: 0; padding: 15px; font-family: 'Quicksand', sans-serif; box-sizing: border-box; }
                         ${iframeDarkModeStyles}
                     </style>
                 </head>
