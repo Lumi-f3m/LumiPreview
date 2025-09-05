@@ -3,42 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Windowed HTML Previewer</title>
+    <title>Cozy HTML Previewer</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&display=swap" rel="stylesheet">
     <style>
-        /* Custom styles to ensure Inter font is applied and body takes full height */
+        /* Custom styles to ensure Bubblegum Sans font is applied and body takes full height */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Bubblegum Sans', sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(to bottom right, #e0f2fe, #ede9fe); /* Light gradient background */
-            overflow: hidden; /* Prevent body scroll if window is dragged off */
-            transition: background-color 0.3s ease; /* Smooth transition for theme change */
+            background: linear-gradient(to bottom right, #FFF8E1, #FFECB3); /* Soft, creamy gradient */
+            overflow: hidden;
+            transition: background-color 0.3s ease;
         }
 
         /* Dark mode styles for the body */
         body.dark-mode {
-            background: linear-gradient(to bottom right, #1a202c, #2d3748); /* Dark gradient background */
-            color: #e2e8f0; /* Light text color */
+            background: linear-gradient(to bottom right, #4E342E, #2A1E1C); /* Warm, dark gradient */
+            color: #F5F5DC;
         }
 
         /* Ensure the iframe fills its container */
         #previewFrame {
             width: 100%;
             height: 100%;
-            border: none; /* Remove default iframe border */
+            border: none;
         }
 
         /* Specific styles for the minimized state */
         #previewWindow.minimized {
-            height: 48px; /* Height of the header */
-            overflow: hidden; /* Hide content */
-            resize: none; /* Disable resizing when minimized */
+            height: 48px;
+            overflow: hidden;
+            resize: none;
         }
 
         /* Specific styles for the maximized state */
@@ -48,27 +48,27 @@
             left: 0;
             top: 0;
             border-radius: 0;
-            transform: none; /* Remove any transform applied by dragging */
+            transform: none;
         }
 
         /* Dark mode styles for the window itself */
         .dark-mode #previewWindow {
-            background-color: #2d3748; /* Darker background for the window */
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4); /* Darker shadow */
+            background-color: #6D4C41;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
         }
 
         /* Dark mode styles for input/textarea */
         .dark-mode #htmlInput,
         .dark-mode #previewFrame {
-            background-color: #4a5568; /* Darker background for inputs */
-            border-color: #4a5568; /* Darker border */
-            color: #e2e8f0; /* Light text */
+            background-color: #5D4037;
+            border-color: #5D4037;
+            color: #F5F5DC;
         }
 
         /* Dark mode styles for labels */
         .dark-mode label,
         .dark-mode h3 {
-            color: #cbd5e0; /* Lighter text for labels */
+            color: #D7CCC8;
         }
 
         /* Styles for the custom message box */
@@ -77,36 +77,36 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background-color: #fff;
+            background-color: #FFFDE7;
             padding: 20px;
-            border-radius: 8px;
+            border-radius: 16px; /* Increased rounded corners */
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
             z-index: 1000;
-            display: none; /* Hidden by default */
+            display: none;
             text-align: center;
-            font-family: 'Inter', sans-serif;
-            color: #333;
+            font-family: 'Bubblegum Sans', sans-serif;
+            color: #424242;
         }
 
         #messageBox.dark-mode {
-            background-color: #4a5568;
-            color: #e2e8f0;
+            background-color: #6D4C41;
+            color: #D7CCC8;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
         }
 
         #messageBox button {
             margin-top: 15px;
-            background-color: #4f46e5; /* Indigo 600 */
+            background-color: #FFAB91; /* Soft coral */
             color: white;
             padding: 8px 16px;
-            border-radius: 6px;
+            border-radius: 12px; /* Rounded button corners */
             border: none;
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
 
         #messageBox button:hover {
-            background-color: #4338ca; /* Indigo 700 */
+            background-color: #FF8A65; /* Darker coral on hover */
         }
     </style>
 </head>
@@ -114,104 +114,91 @@
 
     <button
         id="darkModeToggle"
-        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center z-50
-               dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white"
+        class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-[#FFECB3] hover:bg-[#FFD54F] text-[#424242] font-bold py-2 px-4 rounded-full shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center z-50
+               dark:bg-[#2A1E1C] dark:hover:bg-[#4E342E] dark:text-[#F5F5DC]"
     >
-        <svg id="moonIcon" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-        </svg>
-        <svg id="sunIcon" class="h-5 w-5 mr-2 hidden" viewBox="0 0 20 20" fill="currentColor">
-            <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 4a1 1 0 011 1v1a1 1 0 11-2 0V7a1 1 0 011-1zM5.029 7.029a1 1 0 011.414 0L7.414 8.586a1 1 0 11-1.414 1.414L5.029 8.414a1 1 0 010-1.414zM10 15a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.029 12.971a1 1 0 010 1.414l-1.414 1.414a1 1 0 01-1.414-1.414l1.414-1.414a1 1 0 011.414 0zM2 10a1 1 0 011-1h1a1 1 0 110 2H3a1 1 0 01-1-1zm15 0a1 1 0 011-1h1a1 1 0 110 2h-1a1 1 0 01-1-1zM12.971 14.971a1 1 0 01-1.414 0L10 13.414l-1.586 1.586a1 1 0 01-1.414-1.414L8.586 12l-1.586-1.586a1 1 0 011.414-1.414L10 10.586l1.586-1.586a1 1 0 011.414 1.414L11.414 12l1.586 1.586a1 1 0 010 1.414z" clipRule="evenodd" />
-        </svg>
-        <span id="darkModeText">Toggle Dark Mode</span>
+        <span id="sunEmoji" class="text-xl">☀️</span>
+        <span id="moonEmoji" class="text-xl hidden">🌙</span>
+        <span id="darkModeText" class="ml-2">Toggle Dark Mode</span>
     </button>
 
     <div
         id="previewWindow"
-        class="absolute bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ease-in-out"
+        class="absolute bg-[#FFFDE7] rounded-3xl shadow-2xl overflow-hidden flex flex-col transition-all duration-300 ease-in-out"
         style="
-            width: 600px; /* Smaller initial width */
-            height: 450px; /* Smaller initial height */
-            left: 50px; /* Initial position */
-            top: 50px;  /* Initial position */
+            width: 600px;
+            height: 450px;
+            left: 50px;
+            top: 50px;
         "
     >
         <div
             id="windowHeader"
-            class="flex items-center justify-between bg-gradient-to-r from-blue-600 to-purple-600 text-white p-3 cursor-grab active:cursor-grabbing rounded-t-xl"
+            class="flex items-center justify-between bg-gradient-to-r from-[#FFAB91] to-[#FFCC80] text-white p-3 cursor-grab active:cursor-grabbing rounded-t-3xl"
         >
             <div class="flex space-x-2 mr-4">
-                <button id="closeBtn" class="w-4 h-4 bg-red-500 hover:bg-red-400 rounded-full transition-colors flex items-center justify-center group">
-                    <svg class="w-3 h-3 text-red-900 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                <button id="closeBtn" class="w-5 h-5 bg-[#EF5350] hover:bg-[#E57373] rounded-full transition-colors flex items-center justify-center group text-white">
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity">❌</span>
                 </button>
-                <button id="minimizeBtn" class="w-4 h-4 bg-yellow-400 hover:bg-yellow-300 rounded-full transition-colors flex items-center justify-center group">
-                    <svg class="w-3 h-3 text-yellow-900 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd"></path></svg>
+                <button id="minimizeBtn" class="w-5 h-5 bg-[#FFEE58] hover:bg-[#FFD54F] rounded-full transition-colors flex items-center justify-center group text-white">
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity">➖</span>
                 </button>
-                <button id="maximizeBtn" class="w-4 h-4 bg-green-500 hover:bg-green-400 rounded-full transition-colors flex items-center justify-center group">
-                    <svg class="w-3 h-3 text-green-900 opacity-0 group-hover:opacity-100 transition-opacity" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm1.414 1.414a1 1 0 011.414 0L10 9.586l3.172-3.172a1 1 0 111.414 1.414L11.414 11l3.172 3.172a1 1 0 01-1.414 1.414L10 12.414l-3.172 3.172a1 1 0 01-1.414-1.414L8.586 11l-3.172-3.172a1 1 0 010-1.414z" clipRule="evenodd"></path></svg>
+                <button id="maximizeBtn" class="w-5 h-5 bg-[#66BB6A] hover:bg-[#A5D6A7] rounded-full transition-colors flex items-center justify-center group text-white">
+                    <span class="opacity-0 group-hover:opacity-100 transition-opacity">➕</span>
                 </button>
             </div>
-            <span class="text-lg font-semibold flex items-center mx-auto">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                </svg>
-                HTML Previewer
+            <span class="text-xl font-semibold flex items-center mx-auto text-[#424242]">
+                <span class="mr-2">🐾</span> HTML Previewer
             </span>
-            </div>
+        </div>
 
         <div class="flex flex-1 p-4 overflow-hidden">
             <div class="flex flex-col w-1/2 pr-4">
-                <label for="htmlInput" class="block text-gray-700 text-sm font-bold mb-2">
+                <label for="htmlInput" class="block text-[#424242] text-lg font-bold mb-2">
                     Enter HTML or choose a file:
                 </label>
                 <textarea
                     id="htmlInput"
-                    class="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm resize-none mb-3 shadow-sm"
-                    placeholder=""
+                    class="flex-1 p-3 border border-[#FFD54F] rounded-2xl focus:outline-none focus:ring-2 focus:ring-[#FF8A65] font-mono text-sm resize-none mb-3 shadow-inner"
+                    placeholder=" "
                 ></textarea>
                 <div class="flex items-center space-x-3 mb-3">
-                    <label class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-200 ease-in-out transform hover:scale-105">
+                    <label class="cursor-pointer bg-[#90CAF9] hover:bg-[#64B5F6] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all duration-200 ease-in-out transform hover:scale-105">
                         Choose File
                         <input type="file" id="fileInput" accept=".html,.htm" class="hidden" />
                     </label>
                     <button
                         id="previewButton"
-                        class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center"
+                        class="bg-[#AED581] hover:bg-[#81C784] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clipRule="evenodd" />
-                        </svg>
+                        <span class="mr-2">▶️</span>
                         Preview HTML
                     </button>
                 </div>
             </div>
 
-            <div class="flex flex-col w-1/2 pl-4 border-l border-gray-200">
-                <h3 class="text-gray-700 text-sm font-bold mb-2">Live Preview:</h3>
+            <div class="flex flex-col w-1/2 pl-4 border-l border-[#FFD54F]">
+                <h3 class="text-[#424242] text-lg font-bold mb-2">Live Preview:</h3>
                 <iframe
                     id="previewFrame"
-                    class="flex-1 border border-gray-300 rounded-lg bg-white shadow-inner mb-3"
+                    class="flex-1 border border-[#FFD54F] rounded-2xl bg-white shadow-inner mb-3"
                     title="HTML Preview"
                     sandbox="allow-scripts allow-same-origin"
-                    srcdoc="<p style='font-family: Inter, sans-serif; padding: 10px;'>Your HTML will appear here...</p>"
+                    srcdoc="<p style='font-family: Bubblegum Sans, sans-serif; padding: 10px; color: #424242;'>Your HTML will appear here...</p>"
                 ></iframe>
                 <div class="flex flex-col space-y-2">
                     <button
                         id="openAboutBlankBtn"
-                        class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                        class="bg-[#FFD54F] hover:bg-[#FFCC80] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center justify-center"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
+                        <span class="mr-2">🚪</span>
                         Open in about:blank
                     </button>
                     <button
                         id="openFullscreenBtn"
-                        class="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-lg shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center justify-center"
+                        class="bg-[#FFAB91] hover:bg-[#FF8A65] text-white font-bold py-2 px-4 rounded-xl shadow-md transition-all duration-200 ease-in-out transform hover:scale-105 flex items-center justify-center"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-5v4m0 0h-4m0-4l-5 5M4 16v4m0 0h4m0 0l5-5m11 5v-4m0 0h-4m0 4l-5-5" />
-                        </svg>
+                        <span class="mr-2">🖼️</span>
                         Open in new Tab
                     </button>
                 </div>
@@ -220,7 +207,7 @@
 
         <div
             id="resizeHandle"
-            class="absolute bottom-0 right-0 w-4 h-4 bg-gray-400 hover:bg-gray-500 cursor-nwse-resize rounded-br-xl"
+            class="absolute bottom-0 right-0 w-6 h-6 bg-[#FFD54F] hover:bg-[#FFCC80] cursor-nwse-resize rounded-br-3xl"
         ></div>
     </div>
 
@@ -249,10 +236,10 @@
         const minimizeBtn = document.getElementById('minimizeBtn');
         const maximizeBtn = document.getElementById('maximizeBtn');
 
-        // Dark mode toggle button and its icons/text
+        // Dark mode toggle button and its emojis/text
         const darkModeToggle = document.getElementById('darkModeToggle');
-        const moonIcon = document.getElementById('moonIcon');
-        const sunIcon = document.getElementById('sunIcon');
+        const sunEmoji = document.getElementById('sunEmoji');
+        const moonEmoji = document.getElementById('moonEmoji');
         const darkModeText = document.getElementById('darkModeText');
 
         // Message box elements
@@ -272,11 +259,10 @@
         // Variables for window state (minimize/maximize)
         let isMinimized = false;
         let isMaximized = false;
-        let originalWindowRect = {}; // Store original position and size for maximize/restore
+        let originalWindowRect = {};
 
         // --- Draggable Window Logic ---
         windowHeader.addEventListener('mousedown', (e) => {
-            // Only allow dragging if not maximized and click is on the header itself
             if (!isMaximized && (e.target === windowHeader || e.target.closest('#windowHeader') === windowHeader)) {
                 isDragging = true;
                 dragOffsetX = e.clientX - previewWindow.offsetLeft;
@@ -313,8 +299,7 @@
 
         // --- Resizable Window Logic ---
         resizeHandle.addEventListener('mousedown', (e) => {
-            e.stopPropagation(); // Prevent dragging from starting if clicking on resize handle
-            // Only allow resizing if not maximized
+            e.stopPropagation();
             if (!isMaximized) {
                 isResizing = true;
                 resizeStartX = e.clientX;
@@ -326,25 +311,23 @@
 
         // --- HTML Input and Preview Logic ---
         function updateIframeContent(htmlString) {
-            // Determine if dark mode is active for the main app
             const isDarkModeActive = body.classList.contains('dark-mode');
 
             // Basic dark mode styles to inject into the iframe
             const iframeDarkModeStyles = isDarkModeActive ? `
                 body {
-                    background-color: #1a202c !important; /* Dark background */
-                    color: #e2e8f0 !important; /* Light text */
+                    background-color: #2A1E1C !important;
+                    color: #F5F5DC !important;
                 }
                 h1, h2, h3, h4, h5, h6 {
-                    color: #e2e8f0 !important;
+                    color: #F5F5DC !important;
                 }
                 p, span, div {
-                    color: #cbd5e0 !important;
+                    color: #D7CCC8 !important;
                 }
                 a {
-                    color: #90cdf4 !important; /* Lighter link color */
+                    color: #FFD54F !important;
                 }
-                /* Add more specific dark mode styles for common elements if needed */
             ` : '';
 
             const fullHtml = `
@@ -355,8 +338,8 @@
                     <meta name="viewport" content="width=device-width, initial-scale=1.0">
                     <title>Preview</title>
                     <style>
-                        body { margin: 0; padding: 10px; font-family: 'Inter', sans-serif; box-sizing: border-box; }
-                        ${iframeDarkModeStyles} /* Inject dark mode styles */
+                        body { margin: 0; padding: 10px; font-family: 'Bubblegum Sans', sans-serif; box-sizing: border-box; }
+                        ${iframeDarkModeStyles}
                     </style>
                 </head>
                 <body>
@@ -364,7 +347,6 @@
                 </body>
                 </html>
             `;
-            console.log("Updating iframe content. Dark mode active in iframe:", isDarkModeActive); // Debugging log
             previewFrame.srcdoc = fullHtml;
         }
 
@@ -389,86 +371,64 @@
             const newWindow = window.open('about:blank', '_blank');
             if (newWindow) {
                 newWindow.document.write(previewFrame.srcdoc);
-                newWindow.document.close(); // Close the document to ensure content is rendered
+                newWindow.document.close();
             } else {
-                // Fallback for pop-up blockers
-                console.error("Popup blocked. Please allow pop-ups for this site to open in about:blank.");
+                console.error("Popup blocked.");
             }
         });
 
         openFullscreenBtn.addEventListener('click', () => {
-            const newWindow = window.open('', '_blank'); // Open a new blank tab
+            const newWindow = window.open('', '_blank');
             if (newWindow) {
                 newWindow.document.write(previewFrame.srcdoc);
-                newWindow.document.close(); // Close the document to ensure content is rendered
-                // Note: Programmatic fullscreen of a new tab/window is generally not allowed
-                // for security reasons. Users must manually activate fullscreen.
-                // This button opens the content in a new tab for a cleaner view.
+                newWindow.document.close();
             } else {
-                // Fallback for pop-up blockers
-                console.error("Popup blocked. Please allow pop-ups for this site to open in a new tab.");
+                console.error("Popup blocked.");
             }
         });
 
 
-        // --- MacBook OS Button Functionality ---
-
-        // Close Button (Red)
+        // --- macOS Button Functionality ---
         closeBtn.addEventListener('click', () => {
-            previewWindow.style.display = 'none'; // Hide the window
-            messageBox.style.display = 'block'; // Show the message box
-            // Apply dark mode to message box if body is in dark mode
+            previewWindow.style.display = 'none';
+            messageBox.style.display = 'block';
             if (body.classList.contains('dark-mode')) {
                 messageBox.classList.add('dark-mode');
             } else {
                 messageBox.classList.remove('dark-mode');
             }
-            console.log("Close button clicked: Window hidden, message box shown."); // Debugging log
         });
 
-        // Close message box button
         closeMessageBoxBtn.addEventListener('click', () => {
-            messageBox.style.display = 'none'; // Hide the message box
-            console.log("Message box closed."); // Debugging log
+            messageBox.style.display = 'none';
         });
 
         // Minimize Button (Yellow)
         minimizeBtn.addEventListener('click', () => {
-            console.log("Minimize button clicked. Current state: isMinimized =", isMinimized, ", isMaximized =", isMaximized); // Debugging log
             if (isMaximized) {
-                console.log("Minimizing from maximized state. Calling maximizeBtn.click()."); // Debugging log
-                maximizeBtn.click(); // Restore from maximized first
-                // No setTimeout needed here, as the next block will handle minimization
+                maximizeBtn.click();
             }
 
-            // After potential restoration from maximized, proceed with minimize/restore
             if (!isMinimized) {
-                originalWindowRect.height = previewWindow.offsetHeight; // Store current height before minimizing
+                originalWindowRect.height = previewWindow.offsetHeight;
                 previewWindow.classList.add('minimized');
                 isMinimized = true;
-                resizeHandle.style.display = 'none'; // Hide resize handle when minimized
-                console.log("Window minimized."); // Debugging log
+                resizeHandle.style.display = 'none';
             } else {
-                previewWindow.style.height = `${originalWindowRect.height}px`; // Restore original height
+                previewWindow.style.height = `${originalWindowRect.height}px`;
                 previewWindow.classList.remove('minimized');
                 isMinimized = false;
-                resizeHandle.style.display = 'block'; // Show resize handle
-                console.log("Window restored from minimized."); // Debugging log
+                resizeHandle.style.display = 'block';
             }
         });
 
         // Maximize Button (Green)
         maximizeBtn.addEventListener('click', () => {
-            console.log("Maximize button clicked. Current state: isMinimized =", isMinimized, ", isMaximized =", isMaximized); // Debugging log
             if (isMinimized) {
-                console.log("Maximizing from minimized state. Calling minimizeBtn.click()."); // Debugging log
-                minimizeBtn.click(); // Restore from minimized first
-                // No setTimeout needed here, as the next block will handle maximization
+                minimizeBtn.click();
             }
 
-            // After potential restoration from minimized, proceed with maximize/restore
             if (!isMaximized) {
-                // Store current position and size before maximizing
                 originalWindowRect = {
                     left: previewWindow.offsetLeft,
                     top: previewWindow.offsetTop,
@@ -477,51 +437,40 @@
                 };
                 previewWindow.classList.add('maximized');
                 isMaximized = true;
-                resizeHandle.style.display = 'none'; // Hide resize handle when maximized
-                windowHeader.style.cursor = 'default'; // Disable dragging when maximized
-                console.log("Window maximized."); // Debugging log
+                resizeHandle.style.display = 'none';
+                windowHeader.style.cursor = 'default';
             } else {
-                // Restore to original position and size
                 previewWindow.style.left = `${originalWindowRect.left}px`;
                 previewWindow.style.top = `${originalWindowRect.top}px`;
                 previewWindow.style.width = `${originalWindowRect.width}px`;
                 previewWindow.style.height = `${originalWindowRect.height}px`;
                 previewWindow.classList.remove('maximized');
                 isMaximized = false;
-                resizeHandle.style.display = 'block'; // Show resize handle
-                windowHeader.style.cursor = 'grab'; // Re-enable dragging
-                console.log("Window restored from maximized."); // Debugging log
+                resizeHandle.style.display = 'block';
+                windowHeader.style.cursor = 'grab';
             }
         });
 
         // --- Dark Mode Toggle Logic ---
         darkModeToggle.addEventListener('click', () => {
-            body.classList.toggle('dark-mode'); // Toggle dark-mode class on the body
-            console.log("Dark mode toggle clicked. Body has dark-mode:", body.classList.contains('dark-mode')); // Debugging log
-
-            // Toggle button appearance and icons based on dark-mode class on body
+            body.classList.toggle('dark-mode');
             if (body.classList.contains('dark-mode')) {
-                moonIcon.classList.add('hidden');
-                sunIcon.classList.remove('hidden');
-                darkModeText.textContent = 'Toggle Light Mode'; // Change text
-                console.log("Switched to Dark Mode: Sun icon shown, text 'Toggle Light Mode'."); // Debugging log
+                sunEmoji.classList.add('hidden');
+                moonEmoji.classList.remove('hidden');
+                darkModeText.textContent = 'Toggle Light Mode';
             } else {
-                moonIcon.classList.remove('hidden');
-                sunIcon.classList.add('hidden');
-                darkModeText.textContent = 'Toggle Dark Mode'; // Change text back
-                console.log("Switched to Light Mode: Moon icon shown, text 'Toggle Dark Mode'."); // Debugging log
+                sunEmoji.classList.remove('hidden');
+                moonEmoji.classList.add('hidden');
+                darkModeText.textContent = 'Toggle Dark Mode';
             }
-
-            // Re-render iframe content to apply dark mode styles if active
             updateIframeContent(htmlInput.value);
         });
 
         // Initial preview when the page loads
         window.onload = () => {
-            updateIframeContent(htmlInput.value); // Load initial content from textarea
-            console.log("Page loaded. Initial iframe content set."); // Debugging log
+            updateIframeContent(htmlInput.value);
         };
-
     </script>
 </body>
 </html>
+
