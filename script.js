@@ -1,7 +1,8 @@
 const fileTree = document.getElementById('file-tree');
 const clock = document.getElementById('clock');
 const status = document.getElementById('status-text');
-
+const aboutPage = document.getElementById('about-page');
+const main = document.getElementById('main');
 let structure = JSON.parse(localStorage.getItem('zeta-structure') || '[]');
 
 // 🕒 Live Clock
@@ -9,6 +10,16 @@ setInterval(() => {
   const now = new Date();
   clock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }, 1000);
+
+// 🧭 About Page Navigation
+document.getElementById('about-btn').onclick = () => {
+  aboutPage.classList.remove('hidden');
+  status.textContent = "Viewing About Page";
+};
+document.getElementById('back-btn').onclick = () => {
+  aboutPage.classList.add('hidden');
+  status.textContent = "Returned to Explorer";
+};
 
 // 🗂️ Render the file tree
 function renderTree() {
@@ -29,14 +40,8 @@ function createNodeElement(node) {
   span.textContent = node.name;
   li.appendChild(span);
 
-  // Rename on double click
   span.ondblclick = () => renameNode(node, span);
-
-  // Context menu (right click)
-  li.oncontextmenu = e => {
-    e.preventDefault();
-    showContextMenu(node);
-  };
+  li.oncontextmenu = e => { e.preventDefault(); showContextMenu(node); };
 
   if (node.type === 'folder') {
     li.classList.add('folder');
@@ -50,7 +55,6 @@ function createNodeElement(node) {
     node.children.forEach(child => ul.appendChild(createNodeElement(child)));
     li.appendChild(ul);
   }
-
   return li;
 }
 
