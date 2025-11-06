@@ -3,54 +3,43 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zeta IDE</title>
+  <title>Zeta IDE — File Explorer</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/vscode-codicons/0.0.36/codicon.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
 </head>
 
 <body>
-  <!-- Titlebar -->
   <header id="titlebar">
-    <span id="workspace-name">Zeta IDE — Workspace</span>
-    <div class="window-controls">
-      <i class="codicon codicon-chrome-minimize"></i>
-      <i class="codicon codicon-chrome-maximize"></i>
-      <i class="codicon codicon-chrome-close"></i>
-    </div>
+    <span>Zeta IDE — Workspace</span>
+    <span id="clock"></span>
   </header>
 
   <div id="app">
-    <!-- Sidebar -->
     <aside id="sidebar">
-      <div id="explorer">
+      <div id="explorer-header">
         <h3><i class="codicon codicon-files"></i> Explorer</h3>
-        <ul id="file-list">
-          <li class="file active"><i class="codicon codicon-file-code"></i> index.html</li>
-          <li class="file"><i class="codicon codicon-file-code"></i> script.js</li>
-          <li class="file"><i class="codicon codicon-json"></i> settings.json</li>
-        </ul>
+        <div id="explorer-actions">
+          <i id="new-file" class="codicon codicon-new-file" title="New File"></i>
+          <i id="new-folder" class="codicon codicon-new-folder" title="New Folder"></i>
+        </div>
       </div>
-      <div id="settings-btn">
-        <i class="codicon codicon-settings-gear"></i>
-      </div>
+
+      <ul id="file-tree"></ul>
     </aside>
 
-    <!-- Editor + Preview -->
     <main id="main">
-      <div id="editor-container"></div>
-      <div id="preview"></div>
+      <div id="placeholder">
+        <i class="codicon codicon-code"></i>
+        <h2>Welcome to Zeta IDE</h2>
+        <p>Create or open a file to begin.</p>
+      </div>
     </main>
   </div>
 
-  <!-- Status Bar -->
   <footer id="statusbar">
     <span id="status-text">Ready</span>
-    <span id="theme-name">Dark Theme</span>
   </footer>
 
   <script type="module" src="script.js"></script>
-  <script type="module" src="customization.js"></script>
-  <script type="module" src="visualizer.js"></script>
 </body>
 </html>
