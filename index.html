@@ -3,47 +3,77 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zeta IDE (VSCode Style)</title>
+  <title>Zeta IDE</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/vscode-codicons/0.0.36/codicon.min.css" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Title bar -->
+  <header id="titlebar">
+    <span>Zeta IDE — workspace: demo</span>
+    <div class="window-controls">
+      <i class="codicon codicon-chrome-minimize"></i>
+      <i class="codicon codicon-chrome-maximize"></i>
+      <i class="codicon codicon-chrome-close"></i>
+    </div>
+  </header>
+
+  <!-- Toolbar -->
   <div id="toolbar">
-    <div class="tool-icon" data-page="welcome" title="Welcome">🏠</div>
-    <div class="tool-icon" data-page="editor" title="Editor">💻</div>
-    <div class="tool-icon" data-page="settings" title="Settings">⚙️</div>
+    <div class="tool-icon active" data-page="welcome" title="Welcome"><i class="codicon codicon-home"></i></div>
+    <div class="tool-icon" data-page="editor" title="Editor"><i class="codicon codicon-code"></i></div>
+    <div class="tool-icon" data-page="settings" title="Settings"><i class="codicon codicon-settings"></i></div>
   </div>
 
+  <!-- Sidebar -->
   <div id="sidebar">
     <h2>WORKSPACE</h2>
     <ul id="file-list">
-      <li class="file">index.html</li>
-      <li class="file">style.css</li>
-      <li class="file">script.js</li>
+      <li class="folder">
+        <i class="codicon codicon-folder"></i> src
+        <ul class="nested">
+          <li class="file"><i class="codicon codicon-file-code"></i> main.rs</li>
+          <li class="file"><i class="codicon codicon-file-code"></i> lib.rs</li>
+        </ul>
+      </li>
+      <li class="file"><i class="codicon codicon-html"></i> index.html</li>
+      <li class="file"><i class="codicon codicon-css"></i> style.css</li>
+      <li class="file"><i class="codicon codicon-json"></i> package.json</li>
     </ul>
   </div>
 
+  <!-- Main content -->
   <main id="main">
+    <!-- Welcome Page -->
     <section id="welcome" class="page active">
       <h1>Welcome to Zeta IDE</h1>
-      <p>Inspired by VS Code & Zed — clean, fast, and minimal.</p>
+      <p>Inspired by VS Code × Zed — clean, fast, minimal.</p>
       <div class="start-buttons">
         <button id="openEditor">Open Editor</button>
         <button>Learn More</button>
       </div>
     </section>
 
+    <!-- Editor Page -->
     <section id="editor" class="page">
       <div id="tabs">
-        <div class="tab active">main.rs ✕</div>
+        <div class="tab active"><i class="codicon codicon-file-code"></i> main.rs ✕</div>
       </div>
       <div id="editor-container"></div>
     </section>
 
+    <!-- Settings Page -->
     <section id="settings" class="page">
       <h1>Settings</h1>
-      <p>Theme, layout, and more (coming soon).</p>
+      <p>Customize your theme, layout, and editor preferences (coming soon).</p>
     </section>
   </main>
+
+  <!-- Status bar -->
+  <footer id="statusbar">
+    <span><i class="codicon codicon-terminal"></i> Ready</span>
+    <span>Zeta v1.0</span>
+  </footer>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
   <script src="script.js"></script>
