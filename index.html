@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cozy HTML IDE</title>
+    <title>Mini Web IDE</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Optional: monospaced font -->
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -13,25 +12,26 @@
     <header class="toolbar">
         <button id="previewButton">Preview ▶️</button>
         <button id="openFullscreenBtn">Open in New Tab 🖼️</button>
-        <label for="fileInput" class="file-label">Choose File 📂
-            <input type="file" id="fileInput" accept=".html,.htm" hidden>
-        </label>
     </header>
 
-    <!-- Main Split Layout -->
+    <!-- Main layout: Sidebar + Editor + Preview -->
     <main class="main-container">
-        <!-- Editor -->
-        <textarea id="htmlInput" placeholder="Write your HTML here..."></textarea>
+        <!-- Sidebar for files -->
+        <aside class="sidebar">
+            <h3>Files</h3>
+            <ul id="fileList">
+                <li data-filename="index.html" class="active">index.html</li>
+                <li data-filename="style.css">style.css</li>
+                <li data-filename="script.js">script.js</li>
+            </ul>
+        </aside>
 
-        <!-- Live Preview -->
+        <!-- Editor -->
+        <textarea id="htmlInput" placeholder="Select a file to edit..."></textarea>
+
+        <!-- Preview -->
         <iframe id="previewFrame" title="Live Preview"></iframe>
     </main>
-
-    <!-- Optional message box for notifications -->
-    <div id="messageBox" class="hidden">
-        <p>Notification</p>
-        <button id="closeMessageBox">Got it!</button>
-    </div>
 
     <script src="script.js"></script>
 </body>
