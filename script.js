@@ -1,47 +1,97 @@
-import { applyTheme, loadUserSettings } from './customization.js';
-import { renderPreview } from './visualizer.js';
+const fileTree = document.getElementById('file-tree');
+const clock = document.getElementById('clock');
+const status = document.getElementById('status-text');
 
-let editor;
-let activeFile = 'index.html';
+let structure = JSON.parse(localStorage.getItem('zeta-structure') || '[]');
 
-// Initialize Monaco
-require.config({ paths: { vs: 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs' } });
-require(['vs/editor/editor.main'], function () {
-  editor = monaco.editor.create(document.getElementById('editor-container'), {
-    value: "<!-- Welcome to Zeta IDE -->\n<h1>Hello World</h1>",
-    language: "html",
-    theme: "vs-dark",
-    automaticLayout: true,
-  });
-});
-
-// File switching
-document.querySelectorAll('.file').forEach(file => {
-  file.addEventListener('click', () => {
-    document.querySelectorAll('.file').forEach(f => f.classList.remove('active'));
-    file.classList.add('active');
-    activeFile = file.textContent.trim();
-
-    if (activeFile.endsWith('.html')) {
-      editor.setValue("<h1>Hello from HTML</h1>");
-      monaco.editor.setModelLanguage(editor.getModel(), 'html');
-    } else if (activeFile.endsWith('.js')) {
-      editor.setValue("console.log('Hello from JS');");
-      monaco.editor.setModelLanguage(editor.getModel(), 'javascript');
-    } else if (activeFile.endsWith('.json')) {
-      editor.setValue('{\n  "theme": "zetaDark"\n}');
-      monaco.editor.setModelLanguage(editor.getModel(), 'json');
-    }
-
-    document.getElementById('status-text').textContent = `Editing ${activeFile}`;
-  });
-});
-
-// Preview live updates
+// 🕒 Live Clock
 setInterval(() => {
-  renderPreview(activeFile, editor?.getValue() || '');
+  const now = new Date();
+  clock.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }, 1000);
 
-// Apply saved theme
-const settings = loadUserSettings();
-applyTheme(settings.theme);
+// 🗂️ Render the file tree
+function renderTree() {
+  fileTree.innerHTML = '';
+  structure.forEach(node => fileTree.appendChild(createNodeElement(node)));
+  localStorage.setItem('zeta-structure', JSON.stringify(structure));
+}
+
+function createNodeElement(node) {
+  const li = document.createElement('li');
+  li.className = node.type;
+
+  const icon = document.createElement('i');
+  icon.className = `codicon codicon-${node.type === 'folder' ? 'folder' : 'file-code'}`;
+  li.appendChild(icon);
+
+  const span = document.createElement('span');
+  span.textContent = node.name;
+  li.appendChild(span);
+
+  // Rename on double click
+  span.ondblclick = () => renameNode(node, span);
+
+  // Context menu (right click)
+  li.oncontextmenu = e => {
+    e.preventDefault();
+    showContextMenu(node);
+  };
+
+  if (node.type === 'folder') {
+    li.classList.add('folder');
+    li.onclick = e => {
+      e.stopPropagation();
+      li.classList.toggle('open');
+    };
+
+    const ul = document.createElement('ul');
+    ul.className = 'folder-contents';
+    node.children.forEach(child => ul.appendChild(createNodeElement(child)));
+    li.appendChild(ul);
+  }
+
+  return li;
+}
+
+// 🧩 Node Operations
+function addNode(type) {
+  const name = prompt(`New ${type} name:`);
+  if (!name) return;
+  const newNode = type === 'folder' ? { type, name, children: [] } : { type, name };
+  structure.push(newNode);
+  renderTree();
+  status.textContent = `${type} "${name}" created`;
+}
+
+function deleteNode(nodeName) {
+  structure = structure.filter(n => n.name !== nodeName);
+  renderTree();
+  status.textContent = `"${nodeName}" deleted`;
+}
+
+function renameNode(node, span) {
+  const input = document.createElement('input');
+  input.className = 'rename-input';
+  input.value = node.name;
+  span.replaceWith(input);
+  input.focus();
+  input.onblur = () => {
+    node.name = input.value || node.name;
+    renderTree();
+    status.textContent = `"${node.name}" renamed`;
+  };
+}
+
+function showContextMenu(node) {
+  const confirmDel = confirm(`Delete ${node.name}?`);
+  if (confirmDel) deleteNode(node.name);
+}
+
+// ➕ Buttons
+document.getElementById('new-file').onclick = () => addNode('file');
+document.getElementById('new-folder').onclick = () => addNode('folder');
+
+// First render
+renderTree();
+status.textContent = "Explorer loaded";
