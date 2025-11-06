@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Multi-Language Code Editor</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zed-Inspired Web IDE</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-<div id="app">
+  <div id="app">
     <aside id="sidebar">
-        <button id="openFolderBtn">Open Folder</button>
-        <ul id="fileList"></ul>
+      <h1 class="logo">Zeta</h1>
+      <ul id="file-list">
+        <li class="file active">main.rs</li>
+        <li class="file">main.py</li>
+        <li class="file">index.js</li>
+      </ul>
     </aside>
+    
+    <main id="editor-container"></main>
+    
+    <section id="terminal">
+      <div id="terminal-output">Welcome to Zeta IDE!</div>
+      <input id="terminal-input" placeholder="> Type a command..." />
+    </section>
+  </div>
 
-    <main id="editorArea">
-        <textarea id="codeEditor" placeholder="Open a file to start editing..."></textarea>
-        <iframe id="previewFrame"></iframe>
-    </main>
-</div>
-
-<script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
