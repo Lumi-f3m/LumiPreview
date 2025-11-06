@@ -3,27 +3,47 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zed-Inspired Web IDE</title>
+  <title>Zeta IDE (VSCode Style)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="app">
-    <aside id="sidebar">
-      <h1 class="logo">Zeta</h1>
-      <ul id="file-list">
-        <li class="file active">main.rs</li>
-        <li class="file">main.py</li>
-        <li class="file">index.js</li>
-      </ul>
-    </aside>
-    
-    <main id="editor-container"></main>
-    
-    <section id="terminal">
-      <div id="terminal-output">Welcome to Zeta IDE!</div>
-      <input id="terminal-input" placeholder="> Type a command..." />
-    </section>
+  <div id="toolbar">
+    <div class="tool-icon" data-page="welcome" title="Welcome">🏠</div>
+    <div class="tool-icon" data-page="editor" title="Editor">💻</div>
+    <div class="tool-icon" data-page="settings" title="Settings">⚙️</div>
   </div>
+
+  <div id="sidebar">
+    <h2>WORKSPACE</h2>
+    <ul id="file-list">
+      <li class="file">index.html</li>
+      <li class="file">style.css</li>
+      <li class="file">script.js</li>
+    </ul>
+  </div>
+
+  <main id="main">
+    <section id="welcome" class="page active">
+      <h1>Welcome to Zeta IDE</h1>
+      <p>Inspired by VS Code & Zed — clean, fast, and minimal.</p>
+      <div class="start-buttons">
+        <button id="openEditor">Open Editor</button>
+        <button>Learn More</button>
+      </div>
+    </section>
+
+    <section id="editor" class="page">
+      <div id="tabs">
+        <div class="tab active">main.rs ✕</div>
+      </div>
+      <div id="editor-container"></div>
+    </section>
+
+    <section id="settings" class="page">
+      <h1>Settings</h1>
+      <p>Theme, layout, and more (coming soon).</p>
+    </section>
+  </main>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
   <script src="script.js"></script>
