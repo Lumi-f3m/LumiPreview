@@ -123,3 +123,79 @@ input.rename-input {
   width: 80%;
   font-family: inherit;
 }
+
+
+/* ...keep all existing styles... */
+
+#sidebar-footer {
+  border-top: 1px solid #333;
+  padding: 8px;
+  text-align: center;
+}
+.sidebar-btn {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 6px 0;
+  border-radius: 4px;
+}
+.sidebar-btn i { margin-right: 6px; }
+.sidebar-btn:hover {
+  background: #333;
+  color: var(--accent);
+}
+
+#about-page {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  padding: 40px;
+  overflow-y: auto;
+  animation: fadeIn 0.3s ease;
+}
+#about-page.hidden {
+  display: none;
+}
+#about-page h1 {
+  color: var(--accent);
+  font-size: 28px;
+}
+#about-page h3 {
+  margin-top: 20px;
+  color: var(--accent);
+}
+#supported-files li {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+}
+#supported-files i {
+  margin-right: 6px;
+  color: var(--accent);
+}
+
+.accent-btn {
+  background: var(--accent);
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: inherit;
+  margin-top: 20px;
+  cursor: pointer;
+}
+.accent-btn i {
+  margin-right: 6px;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
