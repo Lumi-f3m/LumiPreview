@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cozy HTML IDE</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Optional: monospaced font -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Toolbar -->
+    <header class="toolbar">
+        <button id="previewButton">Preview ▶️</button>
+        <button id="openFullscreenBtn">Open in New Tab 🖼️</button>
+        <label for="fileInput" class="file-label">Choose File 📂
+            <input type="file" id="fileInput" accept=".html,.htm" hidden>
+        </label>
+    </header>
+
+    <!-- Main Split Layout -->
+    <main class="main-container">
+        <!-- Editor -->
+        <textarea id="htmlInput" placeholder="Write your HTML here..."></textarea>
+
+        <!-- Live Preview -->
+        <iframe id="previewFrame" title="Live Preview"></iframe>
+    </main>
+
+    <!-- Optional message box for notifications -->
+    <div id="messageBox" class="hidden">
+        <p>Notification</p>
+        <button id="closeMessageBox">Got it!</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

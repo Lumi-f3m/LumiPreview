@@ -1,0 +1,85 @@
+/* Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Fira Code', monospace;
+    background-color: #1e1e1e;
+    color: #ccc;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Toolbar */
+.toolbar {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: #2b2b2b;
+    border-bottom: 1px solid #444;
+}
+
+.toolbar button,
+.toolbar .file-label {
+    background: none;
+    border: 1px solid #555;
+    color: #ccc;
+    padding: 0.3rem 0.6rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.toolbar button:hover,
+.toolbar .file-label:hover {
+    border-color: #888;
+    color: #fff;
+}
+
+/* Main Split Layout */
+.main-container {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+/* Editor */
+#htmlInput {
+    flex: 1;
+    padding: 1rem;
+    background-color: #2e2e2e;
+    color: #ddd;
+    border: none;
+    resize: none;
+    outline: none;
+    font-size: 14px;
+}
+
+/* Preview */
+#previewFrame {
+    flex: 1;
+    border-left: 1px solid #444;
+    background-color: #1e1e1e;
+}
+
+/* Message Box */
+#messageBox {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #3a3a3a;
+    color: #fff;
+    padding: 1.5rem 2rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.hidden {
+    display: none;
+}
