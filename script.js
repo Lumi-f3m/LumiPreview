@@ -1,74 +1,68 @@
-const htmlInput = document.getElementById('htmlInput');
-const previewFrame = document.getElementById('previewFrame');
-const previewButton = document.getElementById('previewButton');
-const openFullscreenBtn = document.getElementById('openFullscreenBtn');
+let files = {};   // { filename: { type: 'html' | 'js' | 'css' | 'txt', content: '...' } }
+let currentFile = null;
+
 const fileList = document.getElementById('fileList');
+const codeEditor = document.getElementById('codeEditor');
+const previewFrame = document.getElementById('previewFrame');
+const openFolderBtn = document.getElementById('openFolderBtn');
 
-let files = {
-    'index.html': '<!DOCTYPE html>\n<html>\n<head>\n<title>Index</title>\n</head>\n<body>\nHello World!\n</body>\n</html>',
-    'style.css': 'body { background-color: #1e1e1e; color: #ccc; }',
-    'script.js': 'console.log("Hello from script.js");'
-};
+// 1. Open files (user selects multiple files)
+openFolderBtn.addEventListener('click', async () => {
+    const [handle] = await window.showOpenFilePicker({ multiple: true });
+    for (const fileHandle of handle) {
+        const file = await fileHandle.getFile();
+        const content = await file.text();
+        const type = file.name.split('.').pop(); // crude type detection
+        files[file.name] = { type, content };
+    }
+    renderFileList();
+});
 
-let currentFile = 'index.html';
+// 2. Render sidebar
+function renderFileList() {
+    fileList.innerHTML = '';
+    for (const filename in files) {
+        const li = document.createElement('li');
+        li.textContent = filename;
+        li.dataset.filename = filename;
+        li.addEventListener('click', () => openFile(filename));
+        if (filename === currentFile) li.classList.add('active');
+        fileList.appendChild(li);
+    }
+}
 
-// Function to update editor
-function loadFile(filename) {
+// 3. Open file in editor
+function openFile(filename) {
     currentFile = filename;
-    htmlInput.value = files[filename];
-    updatePreview(files['index.html']); // Only live preview for HTML
-    updateActiveFile();
+    codeEditor.value = files[filename].content;
+    updatePreview();
+    renderFileList();
 }
 
-// Update active file in sidebar
-function updateActiveFile() {
-    document.querySelectorAll('#fileList li').forEach(li => {
-        li.classList.toggle('active', li.dataset.filename === currentFile);
-    });
+// 4. Save changes live
+codeEditor.addEventListener('input', () => {
+    if (!currentFile) return;
+    files[currentFile].content = codeEditor.value;
+    updatePreview();
+});
+
+// 5. Update preview for HTML/CSS/JS
+function updatePreview() {
+    if (!currentFile) return;
+    const ext = files[currentFile].type.toLowerCase();
+    if (['html', 'js', 'css'].includes(ext)) {
+        const html = files['index.html']?.content || '';
+        const css = files['style.css']?.content || '';
+        const js = files['script.js']?.content || '';
+        previewFrame.srcdoc = `
+            <html>
+            <head><style>${css}</style></head>
+            <body>${html}</body>
+            <script>${js}</script>
+            </html>
+        `;
+        previewFrame.style.display = 'block';
+    } else {
+        previewFrame.style.display = 'none'; // hide iframe for non-web languages
+    }
 }
-
-// Update iframe preview
-function updatePreview(content) {
-    const fullHtml = `
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <style>${files['style.css']}</style>
-        </head>
-        <body>${content}</body>
-        <script>${files['script.js']}</script>
-        </html>
-    `;
-    previewFrame.srcdoc = fullHtml;
-}
-
-// Listen to sidebar clicks
-fileList.addEventListener('click', e => {
-    if(e.target.tagName === 'LI') {
-        loadFile(e.target.dataset.filename);
-    }
-});
-
-// Listen to editor changes
-htmlInput.addEventListener('input', () => {
-    files[currentFile] = htmlInput.value;
-    if(currentFile === 'index.html') {
-        updatePreview(files['index.html']);
-    }
-});
-
-// Toolbar buttons
-previewButton.addEventListener('click', () => updatePreview(files['index.html']));
-
-openFullscreenBtn.addEventListener('click', () => {
-    const newWindow = window.open('', '_blank');
-    if(newWindow) {
-        newWindow.document.write(previewFrame.srcdoc);
-        newWindow.document.close();
-    }
-});
-
-// Initial load
-loadFile(currentFile);
