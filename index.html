@@ -1,38 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Web IDE</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multi-Language Code Editor</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Toolbar -->
-    <header class="toolbar">
-        <button id="previewButton">Preview ▶️</button>
-        <button id="openFullscreenBtn">Open in New Tab 🖼️</button>
-    </header>
+<div id="app">
+    <aside id="sidebar">
+        <button id="openFolderBtn">Open Folder</button>
+        <ul id="fileList"></ul>
+    </aside>
 
-    <!-- Main layout: Sidebar + Editor + Preview -->
-    <main class="main-container">
-        <!-- Sidebar for files -->
-        <aside class="sidebar">
-            <h3>Files</h3>
-            <ul id="fileList">
-                <li data-filename="index.html" class="active">index.html</li>
-                <li data-filename="style.css">style.css</li>
-                <li data-filename="script.js">script.js</li>
-            </ul>
-        </aside>
-
-        <!-- Editor -->
-        <textarea id="htmlInput" placeholder="Select a file to edit..."></textarea>
-
-        <!-- Preview -->
-        <iframe id="previewFrame" title="Live Preview"></iframe>
+    <main id="editorArea">
+        <textarea id="codeEditor" placeholder="Open a file to start editing..."></textarea>
+        <iframe id="previewFrame"></iframe>
     </main>
+</div>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
