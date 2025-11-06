@@ -25,6 +25,12 @@
       </div>
 
       <ul id="file-tree"></ul>
+
+      <div id="sidebar-footer">
+        <button id="about-btn" class="sidebar-btn">
+          <i class="codicon codicon-info"></i> About
+        </button>
+      </div>
     </aside>
 
     <main id="main">
@@ -32,6 +38,30 @@
         <i class="codicon codicon-code"></i>
         <h2>Welcome to Zeta IDE</h2>
         <p>Create or open a file to begin.</p>
+      </div>
+
+      <!-- About Page -->
+      <div id="about-page" class="hidden">
+        <h1>About Zeta IDE</h1>
+        <p>A lightweight, browser-based code environment inspired by VS Code and Zed.</p>
+        
+        <h3>🧩 Supported File Types</h3>
+        <ul id="supported-files">
+          <li><i class="codicon codicon-html"></i> HTML</li>
+          <li><i class="codicon codicon-file-code"></i> JavaScript</li>
+          <li><i class="codicon codicon-json"></i> JSON</li>
+          <li><i class="codicon codicon-file"></i> Plain text / Markdown</li>
+        </ul>
+
+        <h3>💬 About Me</h3>
+        <p>
+          Hey there! I'm the creator of <b>Zeta IDE</b> — a clean, customizable coding playground.<br>
+          I love modern design, minimalism, and giving devs creative freedom 🩵
+        </p>
+
+        <button id="back-btn" class="accent-btn">
+          <i class="codicon codicon-arrow-left"></i> Back
+        </button>
       </div>
     </main>
   </div>
