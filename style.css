@@ -20,11 +20,34 @@
 body {
   display: flex;
   height: 100vh;
-  background: var(--bg);
+  background: var(--bg) url('https://www.transparenttextures.com/patterns/dark-mosaic.png');
+  background-blend-mode: multiply;
   overflow: hidden;
 }
 
-/* Toolbar (left vertical bar) */
+/* Title bar */
+#titlebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 28px;
+  background: #2d2d2d;
+  border-bottom: 1px solid #222;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 12px;
+  color: var(--muted);
+  z-index: 10;
+}
+.window-controls i {
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+/* Toolbar (vertical bar) */
 #toolbar {
   background: #202020;
   width: 50px;
@@ -32,9 +55,8 @@ body {
   flex-direction: column;
   align-items: center;
   border-right: 1px solid var(--border);
-  padding-top: 10px;
+  padding-top: 35px;
 }
-
 .tool-icon {
   width: 40px;
   height: 40px;
@@ -47,7 +69,6 @@ body {
   border-radius: 6px;
   transition: background 0.2s;
 }
-
 .tool-icon:hover,
 .tool-icon.active {
   background: #333;
@@ -58,36 +79,49 @@ body {
   width: 220px;
   background: var(--panel);
   border-right: 1px solid var(--border);
-  padding: 10px;
+  padding: 40px 10px 10px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
 }
-
 #sidebar h2 {
   color: var(--muted);
   font-size: 12px;
   margin-bottom: 10px;
   letter-spacing: 1px;
 }
-
 #file-list {
   list-style: none;
   flex: 1;
-  overflow-y: auto;
 }
-
-.file {
+.file, .folder {
   padding: 6px 8px;
   cursor: pointer;
   border-radius: 4px;
+  display: flex;
+  align-items: center;
   transition: background 0.2s;
+}
+.file i, .folder i {
+  margin-right: 6px;
   color: var(--muted);
 }
-
-.file:hover,
+.file:hover, .folder:hover {
+  background: #2b2b2b;
+  box-shadow: inset 1px 0 0 var(--accent);
+}
 .file.active {
-  background: #333;
-  color: var(--text);
+  background: #2d2d2d;
+}
+.folder {
+  user-select: none;
+}
+.folder.open > .nested {
+  display: block;
+}
+.nested {
+  display: none;
+  margin-left: 18px;
 }
 
 /* Main workspace */
@@ -95,34 +129,31 @@ body {
   flex: 1;
   position: relative;
   overflow: hidden;
+  margin-top: 28px;
 }
-
 .page {
   display: none;
   padding: 30px;
-  height: 100%;
+  height: calc(100% - 30px);
 }
-
 .page.active {
   display: block;
 }
 
+/* Welcome page */
 #welcome {
   text-align: center;
-  padding-top: 15%;
+  padding-top: 10%;
 }
-
 #welcome h1 {
   font-size: 2em;
   margin-bottom: 10px;
   color: var(--accent);
 }
-
 #welcome p {
   color: var(--muted);
   margin-bottom: 20px;
 }
-
 .start-buttons button {
   background: var(--accent);
   border: none;
@@ -133,7 +164,6 @@ body {
   margin: 0 5px;
   transition: 0.2s;
 }
-
 .start-buttons button:hover {
   background: #0d8bff;
 }
@@ -147,7 +177,6 @@ body {
   align-items: center;
   padding: 0 10px;
 }
-
 .tab {
   background: transparent;
   padding: 6px 12px;
@@ -156,12 +185,26 @@ body {
   cursor: pointer;
   transition: background 0.2s;
 }
-
 .tab.active {
   background: var(--panel);
   color: var(--accent);
 }
-
 #editor-container {
   height: calc(100% - 35px);
+}
+
+/* Status bar */
+#statusbar {
+  position: fixed;
+  bottom: 0;
+  left: 50px;
+  right: 0;
+  height: 24px;
+  background: #007acc;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 12px;
 }
